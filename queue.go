@@ -15,6 +15,9 @@ type Queue[T any] struct {
 var ErrEmpty = errors.New("empty queue")
 
 func New[T any](size int) *Queue[T] {
+	if size < 1 {
+		size = 1
+	}
 	return &Queue[T]{
 		storage: make([]T, size),
 	}

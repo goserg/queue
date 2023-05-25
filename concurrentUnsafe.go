@@ -11,6 +11,9 @@ type ConcurrentUnsafeQueue[T any] struct {
 }
 
 func NewConcurrentUnsafe[T any](size int) *ConcurrentUnsafeQueue[T] {
+	if size < 1 {
+		size = 1
+	}
 	return &ConcurrentUnsafeQueue[T]{
 		storage: make([]T, size),
 	}
