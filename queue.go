@@ -6,7 +6,7 @@ import (
 )
 
 type Queue[T any] struct {
-	mu     sync.Mutex
+	mu     sync.RWMutex
 	unsafe *ConcurrentUnsafeQueue[T]
 }
 
@@ -31,13 +31,13 @@ func (q *Queue[T]) Pop() (T, error) {
 }
 
 func (q *Queue[T]) Peek() (T, error) {
-	q.mu.Lock()
-	defer q.mu.Unlock()
+	q.mu.RLock()
+	defer q.mu.RUnlock()
 	return q.unsafe.Peek()
 }
 
 func (q *Queue[T]) Len() int {
-	q.mu.Lock()
-	defer q.mu.Unlock()
+	q.mu.RLock()
+	defer q.mu.RUnlock()
 	return q.unsafe.Len()
 }
