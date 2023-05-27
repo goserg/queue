@@ -48,3 +48,13 @@ func (q *ConcurrentUnsafeQueue[T]) Peek() (T, error) {
 	}
 	return q.storage[q.tail], nil
 }
+
+func (q *ConcurrentUnsafeQueue[T]) Len() int {
+	if q.next == q.tail {
+		return 0
+	}
+	if q.next > q.tail {
+		return q.next - q.tail
+	}
+	return len(q.storage) - (q.tail - q.next)
+}

@@ -35,3 +35,9 @@ func (q *Queue[T]) Peek() (T, error) {
 	defer q.mu.Unlock()
 	return q.unsafe.Peek()
 }
+
+func (q *Queue[T]) Len() int {
+	q.mu.Lock()
+	defer q.mu.Unlock()
+	return q.unsafe.Len()
+}

@@ -64,4 +64,7 @@ func TestConcurrent(t *testing.T) {
 	if !errors.Is(err, ErrEmpty) {
 		t.Fatalf("expect %v, got %v", ErrEmpty, err)
 	}
+	if q.Len() != 0 {
+		t.Fatalf("expexted empty queue, got %v", q)
+	}
 }
