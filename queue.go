@@ -29,3 +29,9 @@ func (q *Queue[T]) Pop() (T, error) {
 	defer q.mu.Unlock()
 	return q.unsafe.Pop()
 }
+
+func (q *Queue[T]) Peek() (T, error) {
+	q.mu.Lock()
+	defer q.mu.Unlock()
+	return q.unsafe.Peek()
+}

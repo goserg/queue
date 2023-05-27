@@ -40,3 +40,11 @@ func (q *ConcurrentUnsafeQueue[T]) Pop() (T, error) {
 	q.tail = (q.tail + 1) % len(q.storage)
 	return val, nil
 }
+
+func (q *ConcurrentUnsafeQueue[T]) Peek() (T, error) {
+	var zero T
+	if q.next == q.tail {
+		return zero, ErrEmpty
+	}
+	return q.storage[q.tail], nil
+}
