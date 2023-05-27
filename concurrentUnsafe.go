@@ -1,9 +1,5 @@
 package queue
 
-import (
-	"errors"
-)
-
 type ConcurrentUnsafeQueue[T any] struct {
 	storage []T
 	next    int
@@ -22,15 +18,9 @@ func NewConcurrentUnsafe[T any](size int) *ConcurrentUnsafeQueue[T] {
 func (q *ConcurrentUnsafeQueue[T]) Push(value T) {
 	if (q.next+1)%len(q.storage) == q.tail {
 		newStore := make([]T, len(q.storage)*2)
-		for i := 0; i < len(q.storage); i++ {
-			v, err := q.Pop()
-			if err != nil {
-				if errors.Is(err, ErrEmpty) {
-					break
-				}
-				panic(err) // Should not happen
-			}
-			newStore[i] = v
+		copy(newStore, q.storage[q.tail:])
+		if q.tail > q.next {
+			copy(newStore[len(q.storage)-q.tail:], q.storage[:q.next])
 		}
 		q.next = len(q.storage) - 1
 		q.storage = newStore
